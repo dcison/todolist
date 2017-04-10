@@ -1,0 +1,47 @@
+let React = require('react');
+let ReactDOM = require('react-dom');
+let TodoItems= require('./components/header.js');
+
+let TodoList = React.createClass({
+   constructor: function(e){
+       super();
+       this.state = {
+            todos: [],
+            isAllChecked: flase
+       };
+   },
+   
+    addItem: function (e) {
+        var itemArray = this.state.items;
+        let i = 0;
+        if (this._inputElement.value != "") {//加if判断输入为空的情况
+            itemArray.push(
+                {
+                    text: this._inputElement.value,
+                    key: Date.now(),
+                    isAllChecked: false
+                }
+            )
+            this.setState({
+                items: itemArray
+            });
+        }
+        this._inputElement.value = "";
+        e.preventDefault();//阻止默认动作
+    },
+    render: function () {
+        return (
+            <div id="Box">
+                <form className="List-text" onSubmit={this.addItem}>
+                    <input ref={(a) => this._inputElement = a} placeholder="输入你想做的事,回车结束" id="text-container" />
+                    <button type="submit">添加任务</button>
+                </form>
+                <TodoItems entries={this.state.items} />
+
+            </div>
+        );
+    }
+});
+
+
+ReactDOM.render(<TodoList />, document.body);
